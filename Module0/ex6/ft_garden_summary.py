@@ -5,4 +5,3 @@ def ft_garden_summary() -> None:
 	print('Garden: ', name)
 	print('Plants: ', plants_amnt)
 	print(status)
-ft_garden_summary()
