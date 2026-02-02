@@ -1,0 +1,13 @@
+class Plant():
+	...
+
+class FloweringPlant(Plant):
+	...
+
+class PrizeFlower(FloweringPlant):
+	...
+
+class GardenManager():
+	def __init__(self):
+		...
+	
