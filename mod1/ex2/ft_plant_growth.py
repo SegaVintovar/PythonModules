@@ -4,8 +4,6 @@ class MyPlant:
         self.name = name
         self.height = height
         self.days = days
-    # def grow(self):
-    #     self.height += 1
 
     def get_info(self):
         print(f'{self.name}: {self.height}cm, {self.days} days old')
@@ -13,13 +11,10 @@ class MyPlant:
     def age(self, to_add):
         self.days += to_add
         self.height += to_add
-        get_info(self)
+        self.get_info(self)
 
     def grow(self, to_add):
         self.height += to_add
-
-    def get_info(self):
-        print(f'{self.name}: {self.height}cm, {self.days} days old')
 
 
 if __name__ == "__main__":

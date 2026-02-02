@@ -17,4 +17,3 @@ if __name__ == "__main__":
     while i < 3:
         print(f'{list[i].name}: {list[i].height}cm, {list[i].age} days old')
         i += 1
-    
