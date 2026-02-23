@@ -8,6 +8,7 @@ class Plant:
         self.days = days
         print(f'Created: {self.name} ({self.height}cm, {self.days} days)')
 
+
 def factory() -> None:
     """
     The function to represent how initialize the class member
@@ -24,6 +25,7 @@ def factory() -> None:
     for _ in plant_list:
         i += 1
     print(f'\nTotal plants created: {i}')
+
 
 if __name__ == "__main__":
     factory()

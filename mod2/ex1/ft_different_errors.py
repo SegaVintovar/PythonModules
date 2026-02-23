@@ -14,8 +14,9 @@ def garden_operations():
     # FileNotFoundError
     fd = "missing.txt"
     missing = open(fd)
+    missing.close()
     # KeyError
-    test = {"name": "Valentyn", "surname": "Sudak"}    
+    test = {"name": "Valentyn", "surname": "Sudak"}
     print(test["age"])
 
 

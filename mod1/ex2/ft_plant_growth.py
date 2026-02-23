@@ -30,6 +30,7 @@ class Plant:
         """
         self.height += to_add
 
+
 def main() -> None:
     """This is a function to represent on how the Plant class works"""
     rose = Plant("Rose", 25, 30)

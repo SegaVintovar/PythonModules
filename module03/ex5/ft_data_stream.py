@@ -1,5 +1,6 @@
 import time
 
+
 class Event():
     def __init__(self, id, owner, name):
         self.id = id
@@ -9,13 +10,15 @@ class Event():
     def get_event(self, id):
         return f"Event {id}: Player {self.owner} {self.name}"
 
+
 class Player():
     def __init__(self, name, lvl):
         self.name = name
         self.lvl = lvl
-    
+
     def __str__(self):
         return f"{self.name} (level {self.lvl})"
+
 
 def fibo(n: int):
     a = 0
@@ -26,10 +29,11 @@ def fibo(n: int):
         a = b
         b = old_a + b
 
+
 def event_generator(n: int):
     events = [
         "logged in", "leveled up", "found treasure",
-               "killed monster", "died", "logged out"
+        "killed monster", "died", "logged out"
     ]
     charlie = Player("charlie", 10)
     alice = Player("alice", 8)
@@ -44,10 +48,11 @@ def event_generator(n: int):
             top_players = 1
         else:
             top_players = 0
-        result =  f"Event {i + 1}: Player {current_player}, {current_event}"
+        result = f"Event {i + 1}: Player {current_player}, {current_event}"
         yield (
             result, current_event, top_players, current_player
             )
+
 
 def data_stream() -> float:
     # events = [
@@ -80,6 +85,7 @@ def data_stream() -> float:
     print(f"Treasure events: {trs_fnd}")
     print(f"Level-up events: {lvl_up}")
     return end - start
+
 
 if __name__ in "__main__":
     elapced_time = data_stream()

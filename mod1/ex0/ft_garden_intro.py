@@ -8,5 +8,6 @@ def main() -> None:
     print('Plant: ', plant, '\nHeight: ', height, '\nAge: ', age)
     print('\n=== End of Program ===')
 
+
 if __name__ == "__main__":
     main()
