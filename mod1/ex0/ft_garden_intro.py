@@ -1,9 +1,12 @@
-if __name__ == "__main__":
+def main() -> None:
     """Very first Python program that displays information about a
     plant in your garden"""
     print('=== Welcome to My Garden ===')
-    plant = 'Rose'
-    height = '25cm'
-    age = '30 days'
+    plant: str = 'Rose'
+    height: str = '25cm'
+    age: str = '30 days'
     print('Plant: ', plant, '\nHeight: ', height, '\nAge: ', age)
     print('\n=== End of Program ===')
+
+if __name__ == "__main__":
+    main()
