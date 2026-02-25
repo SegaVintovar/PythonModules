@@ -79,12 +79,12 @@ def test_error_types() -> None:
     except FileNotFoundError:
         print("Caught FileNotFoundError: ",
               "No such file or directory: 'missing.txt'")
-    test = {"name": "Valentyn", "surname": "Sudak"}    
+    test = {"name": "Valentyn", "surname": "Sudak"}
     try:
         test["age"]
     except KeyError:
         print("Caught KeyError: 'age'")
-    print(f"\nTesting multiple errors together...")
+    print("\nTesting multiple errors together...")
     test = {"error": "string", "zero": 0}
     try:
         number = int(test["error"])

@@ -1,11 +1,21 @@
 import sys
 
-def main():
+
+class InputError(Exception):
+    pass
+
+
+def main() -> None:
     print("=== Command Quest ===")
     argc = len(sys.argv)
-    if argc == 1:
-        print("No arguments provided!")
-        print(f"Program name: {sys.argv[0]}")
+    try:
+        if argc == 1:
+            raise InputError(
+                "No arguments provided!\n"
+                f"Program name: {sys.argv[0]}"
+            )
+    except InputError as e:
+        print(str(e))
     else:
         print(f"Program name: {sys.argv[0]}")
         print(f"Arguments recieved: {argc - 1}")
@@ -15,4 +25,6 @@ def main():
             i += 1
         print(f"Total arguments: {i}")
 
-main()
+
+if __name__ == "__main__":
+    main()

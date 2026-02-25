@@ -1,5 +1,6 @@
 import sys
 
+
 def main():
     print("=== Player Score Analytics ===")
     argc = len(sys.argv)
@@ -32,4 +33,5 @@ def main():
             " Usage: python3 ft_score_analytics.py <score1> <score2> .."
         )
 
-main()
+
+

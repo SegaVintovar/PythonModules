@@ -1,9 +1,12 @@
 class WateringError(Exception):
-    def __init__(self, plant):
+    def __init__(self, plant: str):
         self.plant = plant
-        super().__init__(f"Error: Cannont water {self.plant} - invalid plant!")
+        super().__init__(
+            f"Error: Cannont water {self.plant} - invalid plant!"
+        )
 
-def water_plants(plant_list):
+
+def water_plants(plant_list: list) -> None:
     our_plants = ["tomato", "lettuce", "carrots"]
     print("Opening watering system")
     try:
@@ -17,12 +20,14 @@ def water_plants(plant_list):
     finally:
         print("Closing watering system (cleanup)")
 
-def test_watering_system():
+
+def test_watering_system() -> None:
     print("== Garden Watering System ===", "\n\nTesting normal watering...")
-    water_plants(plant_list=["tomato", "lettuce", "carrots"])
-    print("\nTesting with error...")
-    water_plants(plant_list=[None])
-
-    print("\nCleanup always happens, even with errors!")
-
-test_watering_system()
+    try:
+        water_plants(plant_list=["tomato", "lettuce", "carrots"])
+        print("\nTesting with error...")
+        water_plants(plant_list=[None])
+    except WateringError as e:
+        print(str(e))
+    finally:
+        print("\nCleanup always happens, even with errors!")
