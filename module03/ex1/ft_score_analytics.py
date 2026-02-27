@@ -1,7 +1,7 @@
 import sys
 
 
-def main():
+def main() -> None:
     print("=== Player Score Analytics ===")
     argc = len(sys.argv)
     if argc > 1:
@@ -9,7 +9,7 @@ def main():
         i = 1
         while i < argc:
             try:
-                scores.append(int(sys.argv[i]))
+                scores += [int(sys.argv[i])]
             except ValueError:
                 print(
                     f"Error: '{sys.argv[i]}' is not an int type"
@@ -27,6 +27,7 @@ def main():
         print(f"High score: {max(scores)}")
         print(f"Lowest score: {min(scores)}")
         print(f"Score range: {max(scores) - min(scores)}")
+        print()
     else:
         print(
             "No scores provided."
@@ -34,4 +35,5 @@ def main():
         )
 
 
-
+if __name__ == "__main__":
+    main()

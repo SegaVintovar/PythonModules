@@ -1,12 +1,26 @@
 import sys
 
-def parsing(arguments) -> dict:
+class InputError(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
+def parsing(arguments: list) -> dict:
     result = {}
     i = 1
     while i < len(arguments):
         tmp = arguments[i].split(":")
-        result.update({tmp[0]: int(tmp[1])})
-        i += 1
+        if len(tmp) == 2:
+            try:
+                result.update({tmp[0]: int(tmp[1])})
+                i += 1
+            except ValueError:
+                raise ValueError(
+                    "Caught ValueError: The value should be numeric"
+                    )
+        else:
+            raise InputError(f"Agrument {tmp} is incorrect!\n"
+                             "Format should be: program_name iteam:value")
     return result
 
 def inventory_status(inventory: dict) -> None:
@@ -21,7 +35,7 @@ def inventory_status(inventory: dict) -> None:
 
 
 
-def invelntory_stats(inventory: dict) -> None:
+def inventory_stats(inventory: dict) -> None:
     print("\n=== Current Inventory ===")
     total_items = 0
     for value in inventory:
@@ -81,21 +95,25 @@ def finder(inventory: dict, item: str) -> bool:
 def inventory_system():
     print("=== Inventory System Analysis ===")
     if (len(sys.argv) > 1):
-        inventory = parsing(sys.argv)
-        inventory_status(inventory)
-        invelntory_stats(inventory)
-        categories(inventory)
-        demo(inventory)
-        item_to_check = "apples"
-        print(
-            f"Sample lookup - {item_to_check} "
-            f"in inventory: {finder(inventory, item_to_check)}"
-        )
+        try:
+            inventory = parsing(sys.argv)
+            inventory_status(inventory)
+            inventory_stats(inventory)
+            categories(inventory)
+            demo(inventory)
+            item_to_check = "apples"
+            print(
+                f"Sample lookup - {item_to_check} "
+                f"in inventory: {finder(inventory, item_to_check)}"
+            )
+        except Exception as e:
+            print(str(e))
+        
     else:
         print("Fill in the inventory by passing items to the program"
               " items and their amount have to be separated with ':'\n"
               "Example input:\n"
               "python3 ft_inventory_system.py apple:5 bannana:3")
 
-
-inventory_system()
+if __name__ == "__main__":
+    inventory_system()

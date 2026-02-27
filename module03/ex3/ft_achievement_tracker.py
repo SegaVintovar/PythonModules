@@ -3,14 +3,14 @@ class Player():
         self.name = name
         self.achv = achivements
 
-    def show_achivements(self):
+    def show_achivements(self) -> None:
         print(f"Player {self.name} achivements: {self.achv}")
 
 
-def achivement_tracker():
+def achivement_tracker() -> None:
     print("=== Achievement Tracker System ===\n")
     alice = Player(
-        "alice",{
+        "alice", {
             "first_kill", "level_10", "treasure_hunter", "speed_demon"
         }
     )
@@ -46,9 +46,5 @@ def achivement_tracker():
     print(f"Bob unique: {bob.achv - alice.achv}")
 
 
-
-
-
-    # print(f"Player {alice.name} achivements: {alice.achivements}")
-    
-achivement_tracker()
+if __name__ == "__main__":
+    achivement_tracker()

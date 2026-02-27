@@ -28,6 +28,23 @@ def fibo(n: int):
         old_a = a
         a = b
         b = old_a + b
+        i += 1
+
+def prime(n: int):
+    i = 2
+    p = 0
+    while(p < n):
+        j = i
+        while(j > 0):
+            if j == 1:
+                p += 1
+                yield i
+            if  i != j and i % j == 0:
+                break
+            else:
+                j -= 1
+        i += 1
+
 
 
 def event_generator(n: int):
@@ -87,14 +104,20 @@ def data_stream() -> float:
     return end - start
 
 
-if __name__ in "__main__":
+if __name__ == "__main__":
     elapced_time = data_stream()
     print("\nMemory usage: Constant (streaming)")
     print(f"Processing time: {elapced_time:.3f} seconds")
     print("\n=== Generator Demonstration ===")
     fibo_demo = 10
-    print(f"Fibonacci sequence (first {fibo_demo}):")
-    for _ in fibo(fibo_demo):
-        print(_, end=" ")
-    prime_demo = 5
+    print(f"Fibonacci sequence (first {fibo_demo}): ", end="")
+    for i in fibo(fibo_demo):
+        print(i, end=" ")
+    prime_demo = 10
+    print()
+    print(f"Prime numbers: (first {prime_demo}): ", end="")
+    i = 0
+    for i in prime(prime_demo):
+        print(i, end=" ")
+    print()
     
