@@ -23,6 +23,7 @@ def parsing(arguments: list) -> dict:
                              "Format should be: program_name iteam:value")
     return result
 
+
 def inventory_status(inventory: dict) -> None:
     total_items = 0
     for value in inventory:
@@ -32,7 +33,6 @@ def inventory_status(inventory: dict) -> None:
     for value in inventory:
         unique_items += 1
     print(f"Unique items types: {unique_items}")
-
 
 
 def inventory_stats(inventory: dict) -> None:

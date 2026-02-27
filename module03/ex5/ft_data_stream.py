@@ -1,4 +1,5 @@
 import time
+from typing import Any, Generator
 
 
 class Event():
@@ -30,24 +31,39 @@ def fibo(n: int):
         b = old_a + b
         i += 1
 
-def prime(n: int):
+
+# def prime(n: int):
+#     i = 2
+#     p = 0
+#     while (p < n):
+#         j = i
+#         while (j > 0):
+#             if j == 1:
+#                 p += 1
+#                 yield i
+#             if i != j and i % j == 0:
+#                 break
+#             else:
+#                 j -= 1
+#         i += 1
+
+def prime() -> Generator[int, Any, None]:
     i = 2
     p = 0
-    while(p < n):
+    while True:
         j = i
-        while(j > 0):
+        while (j > 0):
             if j == 1:
                 p += 1
                 yield i
-            if  i != j and i % j == 0:
+            if i != j and i % j == 0:
                 break
             else:
                 j -= 1
         i += 1
 
 
-
-def event_generator(n: int):
+def event_generator():
     events = [
         "logged in", "leveled up", "found treasure",
         "killed monster", "died", "logged out"
@@ -58,14 +74,16 @@ def event_generator(n: int):
     frank = Player("frank", 2)
     players = [charlie, alice, bob, frank]
     top_players = 0
-    for i in range(0, n):
+    i = 0
+    while True:
+        i += 1
         current_player = players[i % len(players)]
         current_event = events[i % len(events)]
         if current_player.lvl >= 10:
             top_players = 1
         else:
             top_players = 0
-        result = f"Event {i + 1}: Player {current_player}, {current_event}"
+        result = f"Event {i}: Player {current_player}, {current_event}"
         yield (
             result, current_event, top_players, current_player
             )
@@ -81,12 +99,15 @@ def data_stream() -> float:
     # bob = Player("bob", 12)
     # frank = Player("frank", 2)
     # players = [charlie, alice, bob, frank]
-    number_of_events = 1000
+    number_of_events = 10
     lvl_up = 0
     trs_fnd = 0
     top_players = 0
     start = time.time()
-    for event in event_generator(number_of_events):
+    gen_event = event_generator()
+    i = 0
+    while i < number_of_events:
+        event = next(gen_event)
         print(event[0])
         if event[1] == "leveled up":
             lvl_up += 1
@@ -95,6 +116,7 @@ def data_stream() -> float:
             trs_fnd += 1
         if event[2]:
             top_players += 1
+        i += 1
     end = time.time()
     print("\n=== Stream Analytics ===")
     print(f"Total events processed: {number_of_events}")
@@ -116,8 +138,38 @@ if __name__ == "__main__":
     prime_demo = 10
     print()
     print(f"Prime numbers: (first {prime_demo}): ", end="")
-    i = 0
-    for i in prime(prime_demo):
-        print(i, end=" ")
-    print()
+    # i = 0
+    # for i in prime(prime_demo):
+    #     print(i, end=" ")
+    # print()
     
+    prime_gen = prime()
+    
+    for _ in range(prime_demo):
+        print(next(prime_gen), end=" ")
+
+
+
+def my_generator():
+    return [1, 2, 3]
+
+for value in my_generator():
+    print(value)
+
+
+def my_generator():
+    i = 0
+    while True:
+        yield i
+        i += 1
+
+var = my_generator()
+
+for _ in range(10):
+    print(next(var))
+
+my_list = [1, 2, 3]
+your_list = [4, 5, 6]
+new_list = my_list + your_list
+
+my_list.append(your_list)
