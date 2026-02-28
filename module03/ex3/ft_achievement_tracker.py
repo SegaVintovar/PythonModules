@@ -8,6 +8,16 @@ class Player():
 
 
 def achivement_tracker() -> None:
+    """
+    Sets: unordered, unchangable, and do not allow duplicate values.
+    union() Returns a set containing the union of sets
+        Shortcut: |
+    intersection() Returns a set, that is the intersection of two other sets
+        Shortcut: &
+    difference() Returns a set containing the difference between two 
+    or more sets
+        Shortcut: -
+    """
     print("=== Achievement Tracker System ===\n")
     alice = Player(
         "alice", {
@@ -19,7 +29,7 @@ def achivement_tracker() -> None:
             "first_kill", "level_10", "boss_slayer", "collector"
         }
     )
-    charlie= Player(
+    charlie = Player(
         "charlie", {
             "level_10", "treasure_hunter", "boss_slayer", "speed_demon",
             "perfectionist"

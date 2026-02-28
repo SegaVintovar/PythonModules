@@ -24,6 +24,7 @@ def main() -> None:
             print(f"Argument {i}: {sys.argv[i]}")
             i += 1
         print(f"Total arguments: {i}")
+        print()
 
 
 if __name__ == "__main__":

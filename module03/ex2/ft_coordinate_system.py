@@ -1,9 +1,8 @@
 import math
-import sys
 
 
 def dist_measurer(c1: tuple, c2: tuple) -> float:
-    bs = ((c2[0]-c1[0])**2 +(c2[1]-c1[1])**2 + (c2[2]-c1[2])**2)
+    bs = ((c2[0]-c1[0])**2 + (c2[1]-c1[1])**2 + (c2[2]-c1[2])**2)
     return math.sqrt(bs)
 
 
@@ -25,7 +24,7 @@ def parser(coordinate_string: str) -> tuple:
                 "Error parsing coordinates: invalid literal"
                 f" for int() with base 10: '{almost_result[i]}'"
                 "\nError details- Type: ValueError,"
-                f" Args: (invalid literal for int() with base 10:"
+                " Args: (invalid literal for int() with base 10:"
                 f"  '{almost_result[i]}')"
             )
         i += 1

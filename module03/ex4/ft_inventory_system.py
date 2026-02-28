@@ -1,11 +1,16 @@
 import sys
 
+
 class InputError(Exception):
     def __init__(self, message):
         super().__init__(message)
 
 
 def parsing(arguments: list) -> dict:
+    """
+    Here i am creating an invontory that is a dict.
+    update() method is used to add new items to my inventory
+    """
     result = {}
     i = 1
     while i < len(arguments):
@@ -19,12 +24,17 @@ def parsing(arguments: list) -> dict:
                     "Caught ValueError: The value should be numeric"
                     )
         else:
-            raise InputError(f"Agrument {tmp} is incorrect!\n"
-                             "Format should be: program_name iteam:value")
+            raise InputError(
+                f"Agrument {tmp} is incorrect!\n"
+                "Format should be: program_name iteam:value"
+                )
     return result
 
 
 def inventory_status(inventory: dict) -> None:
+    """
+    Here I am using get() method to get a value of the item in stock
+    """
     total_items = 0
     for value in inventory:
         total_items += inventory.get(value)
@@ -36,6 +46,9 @@ def inventory_status(inventory: dict) -> None:
 
 
 def inventory_stats(inventory: dict) -> None:
+    """
+    Here method items() returns me the keys and values
+    """
     print("\n=== Current Inventory ===")
     total_items = 0
     for value in inventory:
@@ -54,11 +67,14 @@ def inventory_stats(inventory: dict) -> None:
         if value < smallest_item_value:
             smallest_item_value = value
             smallest_item_name = key
+        if total_items == 1:
+            smallest_item_name = largest_item_name
     print("\n=== Inventory Statistics ===")
     print(f"Most abundant: {largest_item_name} ({largest_item_value} units)")
     print(
         f"Least abundant: {smallest_item_name} ({smallest_item_value} units)"
     )
+
 
 def categories(inventory: dict) -> None:
     print("\n=== Item Categories ===")
@@ -74,7 +90,7 @@ def categories(inventory: dict) -> None:
     to_restock = []
     for key, value in categorized["Scarce"].items():
         if value < 2:
-            to_restock.append(key)
+            to_restock += [key]
     print(f"Restock needed: {to_restock}")
 
 
@@ -92,6 +108,7 @@ def finder(inventory: dict, item: str) -> bool:
     else:
         return False
 
+
 def inventory_system():
     print("=== Inventory System Analysis ===")
     if (len(sys.argv) > 1):
@@ -108,12 +125,12 @@ def inventory_system():
             )
         except Exception as e:
             print(str(e))
-        
     else:
         print("Fill in the inventory by passing items to the program"
               " items and their amount have to be separated with ':'\n"
               "Example input:\n"
               "python3 ft_inventory_system.py apple:5 bannana:3")
+
 
 if __name__ == "__main__":
     inventory_system()

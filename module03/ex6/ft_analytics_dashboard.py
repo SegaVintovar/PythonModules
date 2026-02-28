@@ -37,6 +37,7 @@ def my_players() -> dict:
             {
                 "score": 2050,
                 "status": "not_active",
+                "region": "",
                 "achivements":
                 [
                     "first_kill", "collector", "perfectionist"
@@ -138,7 +139,6 @@ def combi(players: dict, unique_achv: set) -> None:
             best_score = players[player]["score"]
             best_player = player
             achv_amnt = len(players[player]["achivements"])
-
     print(
         f"Top performer: {best_player} ({best_score} points, "
         f"{achv_amnt} achievements)"
