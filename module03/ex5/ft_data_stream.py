@@ -1,5 +1,5 @@
 import time
-from typing import Any, Generator
+from typing import Any, Generator, NoReturn
 
 
 class Event():
@@ -8,7 +8,7 @@ class Event():
         self.owner = owner
         self.name = name
 
-    def get_event(self, id):
+    def get_event(self, id) -> str:
         return f"Event {id}: Player {self.owner} {self.name}"
 
 
@@ -21,15 +21,24 @@ class Player():
         return f"{self.name} (level {self.lvl})"
 
 
-def fibo(n: int):
+# def fibo(n: int) -> Generator[int, Any, None]:
+#     a = 0
+#     b = 1
+#     for i in range(n):
+#         yield a
+#         old_a = a
+#         a = b
+#         b = old_a + b
+#         i += 1
+
+def fibo():
     a = 0
-    b = 1
-    for i in range(n):
+    b = 1        
+    while True:
         yield a
         old_a = a
         a = b
         b = old_a + b
-        i += 1
 
 
 # def prime(n: int):
@@ -63,7 +72,11 @@ def prime() -> Generator[int, Any, None]:
         i += 1
 
 
-def event_generator():
+def event_generator() -> Generator[tuple[str, str, bool, Player], Any, NoReturn]:
+    """
+    Generator[YieldType, SendType, ReturnType]
+    ReturnType also can be None
+    """
     events = [
         "logged in", "leveled up", "found treasure",
         "killed monster", "died", "logged out"
@@ -80,9 +93,9 @@ def event_generator():
         current_player = players[i % len(players)]
         current_event = events[i % len(events)]
         if current_player.lvl >= 10:
-            top_players = 1
+            top_players = True
         else:
-            top_players = 0
+            top_players = False
         result = f"Event {i}: Player {current_player}, {current_event}"
         yield (
             result, current_event, top_players, current_player
@@ -133,8 +146,11 @@ if __name__ == "__main__":
     print("\n=== Generator Demonstration ===")
     fibo_demo = 10
     print(f"Fibonacci sequence (first {fibo_demo}): ", end="")
-    for i in fibo(fibo_demo):
-        print(i, end=" ")
+    i = 0
+    fibo_gen = fibo()
+    while i < fibo_demo:
+        print(next(fibo_gen), end=" ")
+        i += 1
     prime_demo = 10
     print()
     print(f"Prime numbers: (first {prime_demo}): ", end="")
@@ -147,29 +163,31 @@ if __name__ == "__main__":
     
     for _ in range(prime_demo):
         print(next(prime_gen), end=" ")
+    print()
 
 
 
-def my_generator():
-    return [1, 2, 3]
 
-for value in my_generator():
-    print(value)
+# def my_generator():
+#     return [1, 2, 3]
+
+# for value in my_generator():
+#     print(value)
 
 
-def my_generator():
-    i = 0
-    while True:
-        yield i
-        i += 1
+# def my_generator():
+#     i = 0
+#     while True:
+#         yield i
+#         i += 1
 
-var = my_generator()
+# var = my_generator()
 
-for _ in range(10):
-    print(next(var))
+# for _ in range(10):
+#     print(next(var), end="")
 
-my_list = [1, 2, 3]
-your_list = [4, 5, 6]
-new_list = my_list + your_list
+# my_list = [1, 2, 3]
+# your_list = [4, 5, 6]
+# new_list = my_list + your_list
 
-my_list.append(your_list)
+# my_list.append(your_list)

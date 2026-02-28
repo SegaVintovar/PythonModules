@@ -17,7 +17,7 @@ def my_players() -> dict:
                 "region": "north",
                 "achivements":
                 [
-                    "first_kill", "level_10", "boss_slayer", "collector"
+                    "first_kill", "level_10", "boss_slayer"
                 ]
             },
         "charlie":
@@ -29,7 +29,8 @@ def my_players() -> dict:
                 [
                     "level_10", "treasure_hunter", "boss_slayer",
                     "speed_demon",
-                    "perfectionist"
+                    "perfectionist",
+                    "collector"
                 ]
             },
         "diana":
@@ -57,7 +58,8 @@ def comph_list(players: dict) -> None:
     ]
     print(f"Scores doubled: {doubled_scores}")
     active_players = [
-        player for player in players if players[player]["status"] == "active"
+        player for player in players
+        if players[player]["status"] == "active"
     ]
     print(f"Active players: {active_players}")
 
@@ -109,6 +111,8 @@ def comph_set(players: dict) -> set:
         for achivenment in players[player]["achivements"]
         }
     print("Unique achievements:", unique_achv)
+    bob_achv = {achivement for achivement in players["bob"]["achivements"]}
+    print(f"Bob`s achivements: {bob_achv}")
     active_regions = {
         players[player]["region"] for player in players
         if players[player]["status"] == "active"
