@@ -13,12 +13,17 @@ class DataProcessor(ABC):
         super().__init__()
 
     def format_output(data: Any) -> str:
+        proc = None
         if type(data) is Logs:
-            return LogProcessor.format_output(data)
-        if type(data[0]) is int:
-            return NumericProcessor.format_output(data)
-        if type(data) is str:
-            return TextProcessor.format_output(data)
+            proc = LogProcessor()
+            # return LogProcessor.format_output(data)
+        elif type(data[0]) is int:
+            proc = NumericProcessor()
+            # return NumericProcessor.format_output(data)
+        elif type(data) is str:
+            proc = TextProcessor()
+            # return TextProcessor.format_output(data)
+        return proc.format_output(data)
 
     @abstractmethod
     def process(self, data: Any) -> str:
@@ -28,18 +33,24 @@ class DataProcessor(ABC):
     def validate(self, data: Any) -> bool:
         ...
 
+    def run_the_processor(self, data: Any) -> None:
+        self.process(data)
+        if self.validate(data) is True:
+            print("Output: ", self.format_output(data))
+
 
 class NumericProcessor(DataProcessor):
     def __init__(self):
         super().__init__()
         print("Initializing Numeric Processor...")
+        self.data = None
 
-    def process(data: Any) -> str:
+    def process(self, data: Any) -> str:
         # self.__data = data
-        print("Processing data: ", data)
+        print("Processing data: ", str(data))
         return str(data)
 
-    def validate(data: Any) -> bool:
+    def validate(self, data: Any) -> bool:
         for i in data:
             try:
                 if type(i) is int:
@@ -52,7 +63,7 @@ class NumericProcessor(DataProcessor):
         print("Validation: Numeric data verified")
         return True
 
-    def format_output(data: Any) -> str:
+    def format_output(self, data: Any) -> str:
         i = 0
         total = 0
         for item in data:
@@ -68,11 +79,11 @@ class TextProcessor(DataProcessor):
     def __init__(self):
         super().__init__()
 
-    def process(data: Any) -> str:
+    def process(self, data: Any) -> str:
         print("Processing data: ", data)
         return str(data)
 
-    def validate(data: Any) -> bool:
+    def validate(self, data: Any) -> bool:
         try:
             if type(data) is not str:
                 raise TypeError
@@ -82,7 +93,7 @@ class TextProcessor(DataProcessor):
             print("Validation: Text data verified")
             return True
 
-    def format_output(data: Any) -> str:
+    def format_output(self, data: Any) -> str:
         if data:
             words = 1
             old_char = " "
@@ -99,19 +110,19 @@ class TextProcessor(DataProcessor):
 
 class LogProcessor(DataProcessor):
     def __init__(self):
-        super().__init__(self)
+        super().__init__()
 
-    def process(data: Logs) -> str:
+    def process(self, data: Logs) -> str:
         print("Processing data: ", f"{data.type}: {data.data}")
 
-    def validate(data: Logs) -> bool:
+    def validate(self, data: Logs) -> bool:
         if type(data) is Logs:
             print("Validation: Log entry verified")
             return True
         else:
             return False
 
-    def format_output(data: Logs) -> str:
+    def format_output(self, data: Logs) -> str:
         output = None
         if data.type == "ERROR":
             output = "[ALERT]"
@@ -123,20 +134,17 @@ class LogProcessor(DataProcessor):
 def main():
     print("=== CODE NEXUS - DATA PROCESSOR FOUNDATION ===\n")
     num_data = [1, 2, 3, 5, 5]
-    NumericProcessor.process(num_data)
-    if NumericProcessor.validate(num_data) is True:
-        print("Output: ", NumericProcessor.format_output(num_data))
+    num = NumericProcessor()
+    num.run_the_processor(num_data)
     print()
     txt_data = "Hello Nexus World"
-    TextProcessor.process(txt_data)
-    if TextProcessor.validate(txt_data) is True:
-        print("Output: ", TextProcessor.format_output(txt_data))
+    txt_proc = TextProcessor()
+    txt_proc.run_the_processor(txt_data)
     print()
     err_log = Logs("Connection timeout", "ERROR")
     info_log = Logs("System ready", "INFO")
-    LogProcessor.process(err_log)
-    if LogProcessor.validate(err_log) is True:
-        print("Output: ", LogProcessor.format_output(err_log))
+    log_proc = LogProcessor()
+    log_proc.run_the_processor(err_log)
     print()
     print("=== Polymorphic Processing Demo ===")
     print("Processing multiple data types through same interface...")

@@ -50,8 +50,30 @@ class SensorStream(StreamBase):
 
 
 class TransactionStream(StreamBase):
+    def __init__(self, id: str, data_type: str):
+        super().__init__()
+        self.id = id
+        self.type = data_type
+        print("Initializing Transaction Stream...")
+        print(f"Stream ID: {self.id}, Type: {self.type}")
+        self.data = {"buy": 0, "sell": 0, "total_actions": 0, "delta": 0}
+
     def process_batch(self, data_batch: List[Any]) -> str:
-        ...
+        i = 0
+        for data in data_batch:
+            if data[0] == "buy":
+                self.data["buy"] += data[1]
+            if data[0] == "sell":
+                self.data["sell"] += data[1]
+            i += 1
+        self.data["total_actions"] = i
+        self.data["delta"] = self.data["sell"] - self.data["buy"]
+        res_str = "Processing transaction batch: "
+        proc = [f"{data[0]}: {data[1]}" for data in data_batch]
+        return res_str + str(proc)
+
+    def sensor_analysis(self):
+        
 
 
 class EventStream(StreamBase):
@@ -69,6 +91,10 @@ def main() -> None:
     sensor_data_batch = [("temp", 22.5), ("humidity", 65), ("pressure", 1013)]
     print("Processing sensor batch:", [sensor.process_batch(sensor_data_batch)])
     print(sensor.sensor_analysis())
+    print()
+    transaction = TransactionStream("TRANS_001", "Financial data")
+    transaction_data = [("buy", 100), ("sell", 150), ("buy", 75)]
+    print(transaction.process_batch(transaction_data))
 
 
 if __name__ == "__main__":
