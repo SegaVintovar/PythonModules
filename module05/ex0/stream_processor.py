@@ -3,13 +3,13 @@ from typing import Any
 
 
 class Logs():
-    def __init__(self, data: str, type: str):
+    def __init__(self, data: str, type: str) -> None:
         self.data = data
         self.type = type
 
 
 class DataProcessor(ABC):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
     def format_output(data: Any) -> str:
@@ -40,7 +40,7 @@ class DataProcessor(ABC):
 
 
 class NumericProcessor(DataProcessor):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         print("Initializing Numeric Processor...")
         self.data = None
@@ -76,7 +76,7 @@ class NumericProcessor(DataProcessor):
 
 
 class TextProcessor(DataProcessor):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
     def process(self, data: Any) -> str:
@@ -109,7 +109,7 @@ class TextProcessor(DataProcessor):
 
 
 class LogProcessor(DataProcessor):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
     def process(self, data: Logs) -> str:
@@ -131,7 +131,7 @@ class LogProcessor(DataProcessor):
         return f"{output} {data.type} level detected: {data.data}"
 
 
-def main():
+def main() -> None:
     print("=== CODE NEXUS - DATA PROCESSOR FOUNDATION ===\n")
     num_data = [1, 2, 3, 5, 5]
     num = NumericProcessor()
