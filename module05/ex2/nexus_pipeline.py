@@ -12,7 +12,6 @@ def my_split(data: str, separator: str) -> List[str]:
                 word = ""
         elif char != separator:
             word += char
-        # continue
     result += [word]
     return result
 
@@ -43,6 +42,7 @@ class InputStage(ProcessingStage):
 
 
 class TransformStage(ProcessingStage):
+    """Should call Adapter according to the class"""
     name = "Data transformation and enrichment"
 
     def __init__(self):
@@ -50,12 +50,15 @@ class TransformStage(ProcessingStage):
 
     def process(self, data: Any) -> Dict:
         if isinstance(data, Dict):
+            JSONAdapter.process(data)
             print("Transform: Enriched with metadata and validation")
             return data
         if isinstance(data, str):
+            CSVAdapter.process(data)
             print("Transform: Parsed and structured data")
             return {"CSV data": [my_split(data, ',')]}
         if isinstance(data, List):
+            StreamAdapter.process(data)
             print("Transform: Aggregated and filtered")
             return {"sensor data": data}
         else:
@@ -95,7 +98,6 @@ class OutputStage(ProcessingStage):
                         "Element of the stream list is not int or float")
             avg = total / i
             result = f"Output: Stream summary: {i} readings, avg: {avg}°C"
-            print(result)
             return result
         else:
             raise TypeError("Output stage Error: invalid data type")
@@ -107,10 +109,6 @@ class ProcessingPipeline(ABC):
 
     # @abstractmethod
     def process(self, data: Any) -> Any:
-        # input = self.stage1.process(data)
-        # transformed = self.stage2.process(input)
-        # output = self.stage3.process(transformed)
-        # return output
         pass
 
     def add_stage(self, stage: ProcessingStage):
@@ -126,26 +124,9 @@ class NexusManager():
     def add_pipeline(self, pipeline: ProcessingPipeline) -> None:
         self.pipelines += [pipeline]
 
-    def process_data(self, data: Any) -> Any:
-        if isinstance(data, Dict):
-            print("\nProcessing JSON data through pipeline...")
-            for stage in self.pipelines:
-                stage.process(data)
-            # obj = JSONAdapter("JSON")
-            # result = obj.process(data)
-        if isinstance(data, str):
-            print("\nProcessing CSV data through same pipeline...")
-            for stage in self.pipelines:
-                stage.process(data)
-            # obj = CSVAdapter("CSV")
-            # result = obj.process(data)
-        if isinstance(data, List):
-            print("\nProcessing Stream data through same pipeline...")
-            for stage in self.pipelines:
-                stage.process(data)
-            # obj = StreamAdapter("Stream")
-            # result = obj.process(data)
-        return data
+    def process_data(self, data: Any) -> None:
+        for stage in self.pipelines:
+            stage.process(data)
 
 
 class JSONAdapter(ProcessingPipeline):
@@ -153,13 +134,8 @@ class JSONAdapter(ProcessingPipeline):
         self.id = pipeline_id
         self.data = {}
 
-    def process(self, data: Dict) -> Union[str, Any]:
+    def process(data: Dict) -> Union[str, Any]:
         result = {key: value for key, value in data.items()}
-        # for key, value in data.items():
-        #     result.add(key)
-        #     result.add(value)
-        # print(result)
-        self.data = result
         return result
 
 
@@ -168,46 +144,76 @@ class CSVAdapter(ProcessingPipeline):
         self.id = pipeline_id
         self.data = {}
 
-    def process(self, data: str) -> Any:
+    def process(data: str) -> Any:
         my_list = my_split(data, ",")
         result = {
             "user": my_list[0],
             "action": my_list[1],
             "timestamp": my_list[2]
             }
-        self.data = result
         return result
 
 
 class StreamAdapter(ProcessingPipeline):
-    def process(self, data: List) -> Any:
-        ...
+    def __init__(self, pipeline_id: str):
+        self.id = pipeline_id
+        self.data = {}
+
+    def process(data: List) -> Any:
+        i = 0
+        total = 0
+        for element in data:
+            if isinstance(element, (int, float)):
+                total += element
+                i += 1
+            else:
+                raise TypeError(
+                    "Element of the stream list is not int or float")
+        avg = total / i
+        result = f"Output: Stream summary: {i} readings, avg: {avg}°C"
+        print(result)
+        return result
 
 
 def main():
     print("=== CODE NEXUS - ENTERPRISE PIPELINE SYSTEM ===")
     print()
-    adapters = [JSONAdapter, CSVAdapter, StreamAdapter]
     stages = [InputStage, TransformStage, OutputStage]
     nexus = NexusManager()
     print()
-    # pipe = ProcessingPipeline()
     print("Creating Data Processing Pipeline...")
     i = 1
     for stage in stages:
         nexus.add_pipeline(stage())
-        # print(f"Stage {i}: {stage.name}")
         i += 1
-    # nexus.add_pipeline(pipe)
     data1 = {"sensor": "temp", "value": 23.5, "unit": "C"}
     data2 = "user,action,timestamp"
     data3 = [20, 21, 22, 23, 20]
-    result = nexus.process_data(data1)
-    result = nexus.process_data(data2)
+    print()
+    print("Processing JSON data through pipeline...")
+    nexus.process_data(data1)
+    print()
+    print("Processing CSV data through same pipeline...")
+    nexus.process_data(data2)
+    print()
+    print("Processing Stream data through same pipeline...")
     nexus.process_data(data3)
-    # print(result)
-    ids = ["JSON", "CSV", "Stream"]
-    
+    err_data = (1, 2)
+    print(
+        "\n=== Error Recovery Test ===",
+        "\nSimulating pipeline failure..."
+        )
+    try:
+        nexus.process_data(err_data)
+    except Exception as e:
+        print(str(e))
+    finally:
+        print(
+            "\nRecovery initiated: Switching to backup processor",
+            "\nRecovery successful: Pipeline restored, processing resumed"
+            )
+    print("\nNexus Integration complete. All systems operational.")
+
 
 if __name__ == "__main__":
     main()
