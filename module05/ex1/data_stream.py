@@ -141,6 +141,7 @@ class EventStream(DataStream):
         self.number_of_events = i
         result1 = f"Event analysis: {i} events, "
         result2 = f"{self.data['error']} errors detected"
+        # print(result1 + result2)
         return result1 + result2
 
     def filter_data(
@@ -161,34 +162,44 @@ class StreamProcessor():
         self.important_data = {"sensor alerts": 0, "big transactions": 0}
 
     def process(
-            self, stream: EventStream | TransactionStream | SensorStream
-            ) -> None:
-        if isinstance(stream, SensorStream):
-            print(
-                f"- Sensor data: {stream.data['readings']}",
-                " readings processed"
-            )
-            for key, value in stream.data.items():
-                if key == "pressure":
-                    if value > 1000:
-                        self.important_data["sensor alerts"] += 1
-        if isinstance(stream, TransactionStream):
-            print(
-                f"- Transaction data: {stream.data['total_actions']}",
-                " operations processed"
-            )
-            for key, value in stream.data.items():
-                if value > 100:
-                    self.important_data["big transactions"] += 1
-        if isinstance(stream, EventStream):
-            print(
-                f"- Event data: {stream.number_of_events}",
-                " events processed"
-            )
-        else:
-            raise TypeError(
-                "Type Error: Stream processor received unsupported data type"
-            )
+            self,
+            stream: EventStream | TransactionStream | SensorStream,
+            data: Any
+            ) -> str:
+        result = stream.process_batch(data)
+        if "buy" in stream.data:
+            if stream.data["buy"] > 100 or stream.data["sell"] > 100:
+                self.important_data["big transactions"] += 1
+        if "humidity" in stream.data:
+            if stream.data["pressure"] > 1000:
+                self.important_data["sensor alerts"] += 1
+        return result
+        # if isinstance(stream, SensorStream):
+        #     print(
+        #         f"- Sensor data: {stream.data['readings']}",
+        #         " readings processed"
+        #     )
+        #     for key, value in stream.data.items():
+        #         if key == "pressure":
+        #             if value > 1000:
+        #                 self.important_data["sensor alerts"] += 1
+        # elif isinstance(stream, TransactionStream):
+        #     print(
+        #         f"- Transaction data: {stream.data['total_actions']}",
+        #         " operations processed"
+        #     )
+        #     for key, value in stream.data.items():
+        #         if value > 100:
+        #             self.important_data["big transactions"] += 1
+        # elif isinstance(stream, EventStream):
+        #     print(
+        #         f"- Event data: {stream.number_of_events}",
+        #         " events processed"
+        #     )
+        # else:
+        #     raise TypeError(
+        #         "Type Error: Stream processor received unsupported data type"
+        #     )
 
     def stream_filter(self) -> None:
         print("Stream filtering active: High-priority data only")
@@ -214,7 +225,7 @@ def main() -> None:
     print("Data filter test(humidity): ", humid_filter)
     print()
     transaction = TransactionStream("TRANS_001")
-    transaction_data = [("buy", 100), ("sell", 150), ("buy", 75)]
+    transaction_data = [("buy", 100), ("sell", 150), ("buy", 75), ("sell", 50)]
     print(transaction.process_batch(transaction_data))
     trans_stats = transaction.get_stats()
     print(
@@ -223,18 +234,21 @@ def main() -> None:
         f"net flow: {trans_stats['delta']}"
     )
     print()
-    evets = ["login", "error", "logout"]
+    evetns = ["login", "error", "logout"]
     event = EventStream("EVENT_001")
-    print(event.process_batch(evets))
+    print(event.process_batch(evetns))
     print()
     print("=== Polymorphic Stream Processing ===")
     print("Processing mixed stream types through unified interface...\n")
     my_streams = [sensor, transaction, event]
+    data_batch = [sensor_data_batch, transaction_data, evetns]
     print("Batch 1 Results:")
     st_proc = StreamProcessor()
     try:
+        i = 0
         for stream in my_streams:
-            st_proc.process(stream)
+            print(st_proc.process(stream, data_batch[i]))
+            i += 1
         print()
         st_proc.stream_filter()
     except Exception as e:

@@ -16,13 +16,10 @@ class DataProcessor(ABC):
         proc = None
         if type(data) is Logs:
             proc = LogProcessor()
-            # return LogProcessor.format_output(data)
         elif type(data[0]) is int:
             proc = NumericProcessor()
-            # return NumericProcessor.format_output(data)
         elif type(data) is str:
             proc = TextProcessor()
-            # return TextProcessor.format_output(data)
         return proc.format_output(data)
 
     @abstractmethod
@@ -46,7 +43,6 @@ class NumericProcessor(DataProcessor):
         self.data = None
 
     def process(self, data: Any) -> str:
-        # self.__data = data
         print("Processing data: ", str(data))
         return str(data)
 
@@ -87,7 +83,7 @@ class TextProcessor(DataProcessor):
         try:
             if type(data) is not str:
                 raise TypeError
-        except TypeError:
+        except TypeError("Received non text data"):
             return False
         else:
             print("Validation: Text data verified")
