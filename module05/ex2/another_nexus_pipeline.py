@@ -22,7 +22,7 @@ class ProcessingStage(Protocol):
         pass
 
 
-class InputStage(ProcessingStage):
+class InputStage:
     name = "Input validation and parsing"
     flow = " Raw -> Processed ->"
 
