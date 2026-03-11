@@ -1,20 +1,20 @@
 import alchemy
-from alchemy.elements import (
-    create_fire, create_air, create_earth, create_water
-    )
+# from alchemy.elements import (
+#     create_fire, create_air, create_earth, create_water
+#     )
 
 
 def main() -> None:
     print("\n=== Sacred Scroll Mastery ===\n")
     print("Testing direct module access")
-    print(create_fire())
-    print(create_water())
-    print(create_earth())
-    print(create_air())
+    print("alchemy.elements.create_fire(): ", alchemy.elements.create_fire())
+    print("alchemy.elements.create_water()", alchemy.elements.create_water())
+    print("alchemy.elements.create_earth()", alchemy.elements.create_earth())
+    print("alchemy.elements.create_air()", alchemy.elements.create_air())
     print("\nTesting package-level access (controlled by __init__.py):")
     try:
         print("alchemy.create_fire():", alchemy.create_fire())
-        print(alchemy.create_water())
+        print("alchemy.create_water()", alchemy.create_water())
     finally:
         pass
     try:
