@@ -44,4 +44,5 @@ class Deck():
                 result["artifacts"] += 1
             total_cost += card.cost
         result["avg_cost"] = round((total_cost / result["total"]), 1)
+        # result["avg_cost"] = total_cost // result["total"]
         return result
