@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Any, List, Union, Dict, Protocol
+from typing import Any, List, Dict, Protocol
 
 
 def my_split(data: str, separator: str) -> List[str]:
