@@ -18,8 +18,8 @@ def main() -> None:
     ideck.add_card(crystal)
     ideck.add_card(drago)
     print("Deck stats: ", ideck.get_deck_stats())
-
-    print("\nDrawing and playing cards:\n")
+    ideck.shuffle()
+    print("\nShuffeling, Drawing and playing cards:\n")
     card1 = ideck.draw_card()
     print("Drew: ", card1.name, f"({card1.type})")
     print("Play result: ", card1.play(game_state))
