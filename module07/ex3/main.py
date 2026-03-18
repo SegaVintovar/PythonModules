@@ -1,17 +1,23 @@
 from ex3 import FantasyCardFactory, GameEngine, AggressiveStrategy
 
+
 def main() -> None:
-    factory = FantasyCardFactory("test")
-    new_creature = factory.create_creature()
-    deck = factory.create_themed_deck(6)
-    enemy = factory.create_themed_deck(2)
-    # print(deck["creature_cards"], deck["spell_cards"], deck["artifacts"])
-    # print(new_creature.name)
-    strategy = AggressiveStrategy()
-    # print(strategy.execute_turn(deck["creature_cards"], enemy["creature_cards"]))
+    print("\n=== DataDeck Game Engine ===\n")
+    print("Configuring Fantasy Card Game...")
+    factory = FantasyCardFactory("FantasyCardFactory")
     engine = GameEngine()
+    strategy = AggressiveStrategy()
+    print("Factory: ", factory.name)
+    print("Strategy: ", strategy.get_strategy_name())
+    print("Avaliable types: ", factory.get_supported_types())
     engine.configure_engine(factory, strategy)
     engine.simulate_turn()
+    print("\nGame report:")
+    print(engine.get_engine_status())
+    print(
+        "\nAbstract Factory + Strategy Pattern: Maximum flexibility achieved!"
+        )
+
 
 if __name__ == "__main__":
     main()

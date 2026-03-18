@@ -1,5 +1,5 @@
 # from .Card import Card
-from . import CreatureCard
+from .CreatureCard import CreatureCard
 
 
 def main():

@@ -1,5 +1,17 @@
 from abc import ABC, abstractmethod
 from typing import Dict
+from enum import Enum
+
+
+class Rarity(Enum):
+    COMMON = (0, "common")
+    UNCOMMON = (1, "uncommon")
+    RARE = (2, "rare")
+    LEGENDARY = (3, "legendary")
+
+    def __init__(self, rarity: int, txt: str):
+        self.rarity = rarity
+        self.text = txt
 
 
 class Card(ABC):
@@ -44,3 +56,6 @@ class Card(ABC):
 
     def get_type(self) -> str:
         return self._type
+
+    def get_mana_cost(self) -> int:
+        return self.cost

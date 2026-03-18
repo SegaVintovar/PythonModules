@@ -1,8 +1,11 @@
-from ex0 import Card
+from ex0 import Card, CreatureCard
+from ex1 import SpellCard
 from .GameStrategy import GameStrategy
+
 
 class AggressiveStrategy (GameStrategy):
     _name = "Agressive Strategy"
+
     def __init__(self):
         pass
 
@@ -15,13 +18,14 @@ class AggressiveStrategy (GameStrategy):
             "enemy": [battlefield],
             "damage": 3
         }
-
+        hand.sort(key=Card.get_mana_cost)
         # maybe save this data to analyze
         for card in hand:
-            card.play(game_state)
+            if type(card) is CreatureCard or type(card) is SpellCard:
+                card.play(game_state)
         # print(game_state)
-        actions = {"cards_played": 
-            [card.name for card in hand],
+        actions = {
+            "cards_played": [card.name for card in hand],
             "mana_used": 200 - game_state["mana"],
             "targets_attacked": [enemy.name for enemy in battlefield],
             "damage_dealt": game_state["damage"] * len(hand)
@@ -32,5 +36,4 @@ class AggressiveStrategy (GameStrategy):
         return self._name
 
     def prioritize_targets(self, available_targets: list) -> list:
-        ...
-
+        return available_targets.sort(key=Card.get_mana_cost, reverse=True)

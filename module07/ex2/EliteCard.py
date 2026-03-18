@@ -14,7 +14,6 @@ class EliteCard(Card, Combatable, Magical):
         self.total_mana_spent = 0
         self.total_mana_channeled = 0
 
-
     def play(self, game_state: dict) -> None:
         game_state["mana"] -= self.cost
         print("Combat phase:")
@@ -67,9 +66,8 @@ class EliteCard(Card, Combatable, Magical):
     def channel_mana(self, amount: int) -> dict:
         self.mana += amount
         self.total_mana_channeled += amount
-        result =  {'channeled': amount, 'total_mana': self.mana}
+        result = {'channeled': amount, 'total_mana': self.mana}
         return result
-
 
     def get_magic_stats(self) -> dict:
         return {

@@ -5,4 +5,7 @@ from .AggressiveStrategy import AggressiveStrategy
 from .GameEngine import GameEngine
 
 
-__all__ = ["CardFactory", "GameStrategy", "FantasyCardFactory", "AggressiveStrategy", "GameEngine"]
+__all__ = [
+    "CardFactory", "GameStrategy", "FantasyCardFactory",
+    "AggressiveStrategy", "GameEngine"
+    ]

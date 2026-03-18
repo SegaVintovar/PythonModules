@@ -9,6 +9,7 @@ from random import choice
 # • Creates magical artifacts (Rings, Staffs, Crystals)
 # • Supports extensible card type registration
 
+
 class FantasyCardFactory(CardFactory):
     def __init__(self, name):
         self.name = name
@@ -20,6 +21,10 @@ class FantasyCardFactory(CardFactory):
             {
                 "name": "Goblin Warrior", "cost": 2,
                 "rarity": "Common", "attack": 2, "health": 1
+            },
+            {
+                "name": "Stone Golem", "cost": 6,
+                "rarity": "Rare", "attack": 5, "health": 8
             }
         ]
         self.articats = [
@@ -32,22 +37,32 @@ class FantasyCardFactory(CardFactory):
                 "name": "Sword of Power", "cost": 3,
                 "rarity": "Uncommon", "durability": 3,
                 "effect": "Permanent: +2 attack to equipped creature"
+            },
+            {
+                "name": "Ring of Wisdom", "cost": 4,
+                "rarity": "Rare", "durability": 4,
+                "effect": "Permanent: Draw an extra card each turn"
+            },
+            {
+                "name": "Staff of Elements", "cost": 6,
+                "rarity": "Legendary", "durability": 7,
+                "effect": "Permanent: +1 spell damage"
             }
         ]
         self.spells = [
             {"name": "Lightning Bolt", "cost": 3,
              "rarity": "Common", "effect_type": "damage"},
-            {"name": "Healing Potion", "cost": 2,
-             "rarity": "Common", "effect_type": "heal"},
             {"name": "Fireball", "cost": 4,
-             "rarity": "Uncommon", "effect_type": "damage"}
+             "rarity": "Uncommon", "effect_type": "damage"},
+            {"name": "Ice Shard", "cost": 2,
+             "rarity": "Common", "effect_type": "damage"}
         ]
 
     def create_card(
             self,
             card_type: Card,
             name_or_power: str | int | None = None,
-        ) -> Card:
+            ) -> Card:
         source = None
         if card_type == CreatureCard:
             source = self.creatures
@@ -70,10 +85,9 @@ class FantasyCardFactory(CardFactory):
             # print(result)
             result = card_type(**result)
             return result
-        
+
     def create_creature(self, name_or_power: str | int | None = None) -> Card:
         return self.create_card(CreatureCard, name_or_power)
-
 
     def create_spell(self, name_or_power: str | int | None = None) -> Card:
         return self.create_card(SpellCard, name_or_power)
@@ -98,7 +112,6 @@ class FantasyCardFactory(CardFactory):
             i += 1
         return deck
 
-
     def get_supported_types(self) -> dict:
         result = {
             "creatures": [creature["name"] for creature in self.creatures],
@@ -106,7 +119,6 @@ class FantasyCardFactory(CardFactory):
             "artifacts": [artifact["name"] for artifact in self.articats]
         }
         return result
-
 
 
 if __name__ == "__main__":

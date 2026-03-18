@@ -25,7 +25,6 @@ def main() -> None:
     aragorn.play(game_state)
     print()
     print("Multiple interface implementation successful!")
-    
 
 
 if __name__ == "__main__":
