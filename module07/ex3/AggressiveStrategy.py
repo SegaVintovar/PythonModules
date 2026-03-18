@@ -11,15 +11,22 @@ class AggressiveStrategy (GameStrategy):
         # then execute the turn
         # make game_state for my game
         game_state = {
-        "mana": 200,
-        "enemy": [battlefield],
-        "damage": 3
+            "mana": 200,
+            "enemy": [battlefield],
+            "damage": 3
         }
+
         # maybe save this data to analyze
         for card in hand:
-            print(card.play(game_state))
-        print(game_state)
-        return game_state
+            card.play(game_state)
+        # print(game_state)
+        actions = {"cards_played": 
+            [card.name for card in hand],
+            "mana_used": 200 - game_state["mana"],
+            "targets_attacked": [enemy.name for enemy in battlefield],
+            "damage_dealt": game_state["damage"] * len(hand)
+        }
+        return actions
 
     def get_strategy_name(self) -> str:
         return self._name
