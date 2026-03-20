@@ -1,12 +1,13 @@
 from .TournamentPlatform import TournamentPlatform
 from .TournamentCard import TournamentCard
 
+
 def main():
     print("\n=== DataDeck Tournament Platform ===")
     platform = TournamentPlatform("name")
     print("\nRegistering Tournament Cards...")
-    card1 = TournamentCard("Fire Dragon", 10, "uncommon", "dragon_001")
-    card2 = TournamentCard("Ice Wizard ", 8, "common", "wizard_001")
+    card1 = TournamentCard("Fire Dragon", 10, "uncommon", "dragon_001", 10)
+    card2 = TournamentCard("Ice Wizard ", 8, "common", "wizard_001", 8)
     platform.register_card(card1)
     platform.register_card(card2)
     print("\nCreating tournament match...")
@@ -23,6 +24,7 @@ def main():
     print("\nPlatform report:\n", platform.generate_tournament_report())
     print("\n=== Tournament Platform Successfully Deployed! ===\n",
           "All abstract patterns working together harmoniously!")
+
 
 if __name__ == "__main__":
     main()
