@@ -4,14 +4,14 @@ from enum import Enum
 
 
 class Rarity(Enum):
-    COMMON = (0, "common")
-    UNCOMMON = (1, "uncommon")
-    RARE = (2, "rare")
-    LEGENDARY = (3, "legendary")
+    COMMON = 10
+    UNCOMMON = 20
+    RARE = 30
+    LEGENDARY = 40
 
-    def __init__(self, rarity: int, txt: str):
+    def __init__(self, rarity: int):
         self.rarity = rarity
-        self.text = txt
+        # self.text = txt
 
 
 class Card(ABC):
