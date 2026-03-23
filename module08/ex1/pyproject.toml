@@ -1,0 +1,10 @@
+[Loading.py]
+name = "mod8.ex1"
+version = "2000"
+dependencies = 
+[
+    "numpy>=2.0,<3.0"
+    "pandas>=3.0,<4.0"
+    "requests>=2.32,<3.0"
+    "matplotlib>=3.8,<4.0"
+]
