@@ -48,6 +48,15 @@ class AlienContact(BaseModel):
                 )
         return self
 
+    def report(self) -> None:
+        print(f"ID: {self.contact_id}")
+        print("Type:", self.contact_type.value)
+        print("Location:", self.location)
+        print(f"Signal: {self.signal_strength}/10")
+        print(f"Duration: {self.duration_minutes} minutes")
+        print(f"Witnesses: {self.witness_count}")
+        print(f"Message: {self.message_received}\n")
+
 
 def main() -> None:
     print("Alien Contact Log Validation")
@@ -65,13 +74,7 @@ def main() -> None:
     }
     valid = AlienContact(**contact_report)
     print("Valid contact report:")
-    print(f"ID: {valid.contact_id}")
-    print("Type:", valid.contact_type)
-    print("Location:", valid.location)
-    print(f"Signal: {valid.signal_strength}/10")
-    print(f"Duration: {valid.duration_minutes} minutes")
-    print(f"Witnesses: {valid.witness_count}")
-    print(f"Message: {valid.message_received}\n")
+    valid.report()
     print("======================================")
     print("Expected validation error:")
     invalid_report = {
@@ -88,9 +91,10 @@ def main() -> None:
     try:
         invalid = AlienContact(**invalid_report)
     except ValidationError as e:
-        print(str(e))
+        # print(str(e.errors()[0]["msg"]))
+        print(str(e.errors()[0]["ctx"]["error"]))
     else:
-        print(invalid)
+        invalid.report()
 
 
 if __name__ == "__main__":
