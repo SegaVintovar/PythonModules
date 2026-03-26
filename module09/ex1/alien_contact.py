@@ -12,39 +12,38 @@ class ContactType(Enum):
 
 
 class AlienContact(BaseModel):
-    contact_id: str = Field(max_length=15, min_legth=5)
+    contact_id: str = Field(max_length=15, min_length=5)
     timestamp: datetime
-    location: str = Field(max_length=100, min_legth=3)
+    location: str = Field(max_length=100, min_length=3)
     contact_type: ContactType
-    signal_stregth: float = Field(ge=0.0, le=10.0)
+    signal_strength: float = Field(ge=0.0, le=10.0)
     duration_minutes: int = Field(gt=0, le=1440)
     witness_count: int = Field(gt=0, le=100)
-    message_received: (str | None) = Field(max_length=500)
+    message_received: str | None = Field(max_length=500, default=None)
     is_verified: bool = False
 
+    # AI suggetsed validation
+    # if not self.contact_id.startswith("AC"):
+    # raise ValueError("Contact ID must start with 'AC' (Alien Contact)")
     @model_validator(mode='after')
-    def validate_contact(self) -> AlienContact:
+    def validate_contact(self):
         if self.contact_id[:2] != "AC":
-            raise ValidationError(
-                "ValidationError:",
+            raise ValueError(
                 "Contact ID must start with 'AC' (Alien Contact)"
                 )
-        if self.contact_type == "physical":
+        if self.contact_type == ContactType.physical:
             if self.is_verified is False:
-                raise ValidationError(
-                    "ValidationError:",
+                raise ValueError(
                     "Physical contact reports must be verified"
                 )
-        if self.contact_type == "telepathic":
+        if self.contact_type == ContactType.telepathic:
             if self.witness_count < 3:
-                raise ValidationError(
-                    "ValidationError:",
+                raise ValueError(
                     "Telepathic contact requires at least 3 witnesses"
                 )
-        if self.signal_stregth > 7.0:
+        if self.signal_strength > 7.0:
             if self.message_received is None:
-                raise ValidationError(
-                    "ValidationError",
+                raise ValueError(
                     "Strong signals (> 7.0) should include received messages"
                 )
         return self
@@ -58,7 +57,7 @@ def main() -> None:
         "timestamp": datetime(2000, 4, 1),
         "location": "Codam",
         "contact_type": "radio",
-        "signal_stregth": 8.5,
+        "signal_strength": 8.5,
         "duration_minutes": 45,
         "witness_count": 5,
         "message_received": "Greetings from Zeta Reticuli",
@@ -66,12 +65,33 @@ def main() -> None:
     }
     valid = AlienContact(**contact_report)
     print("Valid contact report:")
-    print(f"")
-    print("")
-    print("")
-    print("")
-    print("")
-    print("")
-    print("")
-    print("")
-    print("")
+    print(f"ID: {valid.contact_id}")
+    print("Type:", valid.contact_type)
+    print("Location:", valid.location)
+    print(f"Signal: {valid.signal_strength}/10")
+    print(f"Duration: {valid.duration_minutes} minutes")
+    print(f"Witnesses: {valid.witness_count}")
+    print(f"Message: {valid.message_received}\n")
+    print("======================================")
+    print("Expected validation error:")
+    invalid_report = {
+        "contact_id": "AC_2024_001",
+        "timestamp": datetime(2000, 4, 1),
+        "location": "Codam",
+        "contact_type": "telepathic",
+        "signal_strength": 8.5,
+        "duration_minutes": 45,
+        "witness_count": 2,
+        "message_received": "Greetings from Zeta Reticuli",
+        "is_verified": False
+    }
+    try:
+        invalid = AlienContact(**invalid_report)
+    except ValidationError as e:
+        print(str(e))
+    else:
+        print(invalid)
+
+
+if __name__ == "__main__":
+    main()
