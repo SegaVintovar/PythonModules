@@ -57,6 +57,7 @@ def main() -> None:
         import numpy as np
         import matplotlib.pyplot as plt
         print("\nAnalyzing Matrix data...")
+
         # getting data via API
         url = "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart"
         params = {
