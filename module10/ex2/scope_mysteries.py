@@ -30,6 +30,7 @@ def enchantment_factory(enchantment_type: str) -> Callable:
         return my_type
     return copulation
 
+
 # memory_vault works without nonlocal
 # because dictionary mutation is allowed through closure references.
 # also flake8 argue on it
