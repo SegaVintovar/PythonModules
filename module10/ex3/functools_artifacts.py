@@ -103,6 +103,8 @@ def main() -> None:
     print("\nTesting partial_enchanter:")
     encha = MagicEncha("someone")
     res = partial_enchanter(encha)
+    fire_res = res["fire_enchant"]
+    fire_res(target="target")
     res["fire_enchant"](target="target")
     res["ice_enchant"](target="target")
     res["lightning_enchant"](target="target")

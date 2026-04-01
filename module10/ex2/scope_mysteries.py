@@ -26,7 +26,7 @@ def enchantment_factory(enchantment_type: str) -> Callable:
 
     def copulation(name: str) -> str:
         nonlocal my_type
-        my_type += name
+        my_type += " " + name
         return my_type
     return copulation
 
@@ -55,16 +55,28 @@ def memory_vault() -> dict[str, Callable]:
 
 
 def main() -> None:
+    print("\nTesting mage counter:")
     count = mage_counter()
-    another_count = mage_counter()
-    count()
-    count()
-    print(count())
-    print(another_count)
+    for i in range(1, 4):
+        print(f"Call {i}: Mage #{count()}")
+    # count()
+    # count()
+    # print(count())
+
+    # print(another_count)
+    print("\nTesting spell accumulator:")
+    battery = spell_accumulator(5)
+    print("Battery accumulated this amount of power: ", battery(5))
+    print("\nTesting enchantment factory:")
+    sword = enchantment_factory("Sword")
+    print(sword("of Aragorn"))
+    print(sword("son of the Torin"))
+    print("\nTesting memory vault:")
     vault = memory_vault()
+    print("Storing 'key' and 'value' in our vault...")
     vault["store"]("key", "value")
-    print(vault)
-    print(vault["recall"]("key"))
+    print("Recalling value of the 'key':")
+    print("Value: ", vault["recall"]("key"))
 
 
 if __name__ == "__main__":

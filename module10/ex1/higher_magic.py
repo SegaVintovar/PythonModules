@@ -2,7 +2,7 @@ from typing import Callable, Any
 
 
 class Spell():
-    def __init__(self, name: str, power: int):
+    def __init__(self, name: str, power: int) -> None:
         self.name = name
         self.power = power
 
@@ -75,16 +75,20 @@ def main() -> None:
     for spell in names:
         spells.append(Spell(spell, i))
         i += 1
+    print("Testing spell combiner:")
     combi = spell_combiner(spells[0], spells[1])
-    print("Spell combiner result: ", combi())
+    print("Spell combiner result: ", combi(5))
+    print("\nTesting spell amplifier:")
     amp = power_amplifier(spells[2], 2)
     print("Spell amplificator result: ", amp(2))
     # condition = lambda x: x > 0
     # print(callable(condition))
+    print("\nTesting conditional caster:")
     cond = conditional_caster(condition, my_spell)
     print("Result of the conditional caster: ", cond(0))
+    print("\nTesting spell sequence:")
     seq = spell_sequence(spells)
-    print("Spell sequince result: ", seq(2))
+    print("Spell sequence result: ", seq(2), "\n")
     # print(callable(Spell))
     # print(callable(my_spell))
 
